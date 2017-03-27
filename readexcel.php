@@ -5,13 +5,13 @@
  */
     include 'Classes/PHPExcel/IOFactory.php';
    
-   // $inputFileName = 'uploads/'.$_POST['filename'];
+    $inputFileName = 'uploads/'.$_POST['filename'];
     $uploadtype=$_POST['uploadtype'];
-    //$exceltype=$_POST['exceltype'];
-     $exceltype='xls';
-    $inputFileName = 'uploads/Book1.xls';
+    $exceltype=$_POST['exceltype'];
     
-    if($exceltype==='xls'){
+    //$inputFileName = 'uploads/asd.xls';
+    
+    if($exceltype==='xlsx'){
         $exceltype='Excel5';
     }
     else{
@@ -60,14 +60,14 @@
             echo '</div>';
         }
         
-        
+        /*
         if((is_numeric($sheet->getCell('B'.$row)->getValue())===false) || (is_numeric($sheet->getCell('C'.$row)->getValue())===false)){
             echo '<div style="display:table-cell; color:red;border: 1px solid #000;">';
             echo 'SIM or IMEI must be numeric.';
             echo '</div>';
             $x=true;
             
-        }
+        }*/
         if(strlen($sheet->getCell('B'.$row)->getValue())>19){
             echo '<div style="display:table-cell; color:red;border: 1px solid #000;">';
             echo 'SIM should be 19 digits only.';

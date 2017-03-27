@@ -188,7 +188,10 @@ jQuery('.tabs .tab-links a').on('click', function(e)  {
                                 var txtbeforedate = "<input type=\"text\" name=\"simbeforedate\" id=\"simbeforedate\" value=\"\" />";
                                 $('#tab3').append(parabeforedate);
                                 $('#parasimbeforedate').append(lblbeforedate,txtbeforedate);
-
+                                $(function() {
+                                    $("#simbeforedate").datepicker();
+                                });
+    
 
                                 var parasimactivationstatus = document.createElement("P");
                                 parasimactivationstatus.setAttribute("id","parasimactivationstatus");
@@ -203,7 +206,11 @@ jQuery('.tabs .tab-links a').on('click', function(e)  {
                                 var txtsimactivationdate = "<input type=\"text\" name=\"simactivationdate\" id=\"simactivationdate\" value=\"\" />";
                                 $('#tab3').append(parasimactivationdate);
                                 $('#parasimactivationdate').append(lblsimactivationdate,txtsimactivationdate);
-
+                                 $(function() {
+                                    $("#simactivationdate").datepicker();
+                                });
+                                
+                                
                                 var parasiminventorystatus = document.createElement("P");
                                 parasiminventorystatus.setAttribute("id","parasiminventorystatus");
                                 var lblinventorystatus = "<label for=\"siminventorystatus\">Inventory Status:</label>";

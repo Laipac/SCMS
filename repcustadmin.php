@@ -1210,6 +1210,18 @@ function exportexcel(){
                               
                             </li>
                         </ul>
+                        <ul>
+                            <li class="icon icon-arrow-left">
+                                <a class="icon icon-display" href="reportinvoice.php">Invoice</a>
+                              
+                            </li>
+                        </ul>
+                        <ul>
+                            <li class="icon icon-arrow-left">
+                                <a class="icon icon-display" href="reportsim.php">SIM</a>
+                              
+                            </li>
+                        </ul>
                          <ul>
                             <li class="icon icon-arrow-left">
                                 <a class="icon icon-display" href="menu.php">Exit</a>

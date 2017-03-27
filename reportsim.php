@@ -11,7 +11,7 @@ This module is for reports for admin.
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<title>Reports by Invoice - SIM CARD Management System</title>
+<title>Reports by SIM - SIM CARD Management System</title>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
 <link href="style.css" rel="stylesheet" type="text/css"/>
@@ -1031,33 +1031,43 @@ function addtoinvoice(){
     
 }
 function searchval(){
+       
+    if($('#reporttype').val()==="Blank"){
+        $('#searchstatuslabel').show();
+        $('#searchstatuslabel').text("Select a report type.");
+        $('#searchstatuslabel').fadeOut(3000);
+    }
+    else{
+        $.ajax({
+            url: "searchreportsim.php",
+            type: "POST",
+            data: {
+              report:$('#reporttype').val()
+            },
+            success: 
+                function(result){
+                    $('#tab2').empty();
+                    $('#tab2').append(result);
+                    
+                    
+                    $('#tab2').prepend('<p> <label>Total SIM:'+ $('#simtotal').val() +'</label></p>');
+                    if(result.indexOf("No result set.")>-1){
+
+                    }
+                    else{
+                       $('#tab2').prepend('<p><input type="button" value="-->Export to Excel" onclick="exportexcel();" /></p>');
+                       //  $('#tab2').click();
+                         $('#searchstatuslabel').show();
+                        $('#searchstatuslabel').text("Check the report tab for search results.");
+                          $('#searchstatuslabel').fadeOut(5000);
+                    }
+
+                }   
+        });
+
+    }
+        
     
-    $.ajax({
-        url: "searchreportinv.php",
-        type: "POST",
-        data: {
-          customer:$('#customer').val(),
-          invtype:$('#invtype').val(),
-          invstatus:$('#invstatus').val()
-        },
-        success: 
-            function(result){
-                $('#tab2').empty();
-                $('#tab2').append(result);
-                if(result.indexOf("No result set.")>-1){
-                                       
-                }
-                else{
-                   $('#tab2').prepend('<p><input type="button" value="-->Export to Excel" onclick="exportexcel();" /></p>');
-                   //  $('#tab2').click();
-                     $('#searchstatuslabel').show();
-                    $('#searchstatuslabel').text("Check the report tab for search results.");
-                      $('#searchstatuslabel').fadeOut(5000);
-                }
-                
-            }   
-    });
- 
 }
 function exportexcel(){
    /* 
@@ -1090,28 +1100,17 @@ function exportexcel(){
     var myfrm = document.createElement("form");
     myfrm.setAttribute('id',"mydynform");
     myfrm.setAttribute('method',"post");
-    myfrm.setAttribute('action',"reportinvoiceexcel.php");
+    myfrm.setAttribute('action',"reportsimexcel.php");
    
     var hiddenfield = document.createElement("input");
     hiddenfield.setAttribute('type','hidden');
-    hiddenfield.setAttribute('id','customer1');
-    hiddenfield.setAttribute('name','customer1');
-    hiddenfield.setAttribute('value',$('#customer').val());
+    hiddenfield.setAttribute('id','reporttype1');
+    hiddenfield.setAttribute('name','reporttype1');
+    hiddenfield.setAttribute('value',$('#reporttype').val());
     
     myfrm.appendChild(hiddenfield);
     
-    hiddenfield = document.createElement("input");
-    hiddenfield.setAttribute('type','hidden');
-    hiddenfield.setAttribute('name','invtype1');
-    hiddenfield.setAttribute('value',$('#invtype').val());
-    myfrm.appendChild(hiddenfield);
-    
-    hiddenfield = document.createElement("input");
-    hiddenfield.setAttribute('type','hidden');
-    hiddenfield.setAttribute('name','invstatus1');
-    hiddenfield.setAttribute('value',$('#invstatus').val());
-    myfrm.appendChild(hiddenfield);
-    
+   
     document.body.appendChild(myfrm);
     myfrm.submit();
     
@@ -1148,13 +1147,13 @@ function exportexcel(){
                         </ul>
                         <ul>
                             <li class="icon icon-arrow-left">
-                                <a class="icon icon-display" href="reportinvoice.php" style="background-color:aqua;">Invoice</a>
+                                <a class="icon icon-display" href="reportinvoice.php">Invoice</a>
                               
                             </li>
                         </ul>
                         <ul>
                             <li class="icon icon-arrow-left">
-                                <a class="icon icon-display" href="reportsim.php">SIM</a>
+                                <a class="icon icon-display" href="reportsim.php" style="background-color:aqua;">SIM</a>
                               
                             </li>
                         </ul>
@@ -1188,41 +1187,13 @@ function exportexcel(){
                                             <div class="tab-content">
                                                 <div id="tab1" class="tab active">
                                                     
+                                                   
                                                     <p>
-                                                         <label for="customer">Customer:</label>
-                                                        
-                                                          <select name="customer" id="customer">
+                                                        <label for="reporttype">Report Type:</label>
+                                                        <select name="reporttype" id="reporttype">
                                                            <option value="Blank"><--Select--></option>
-                                                          <?php 
-                                                          $sql= $conn->prepare('SELECT customercodeid,customername FROM customercode');
-                                                          $sql->execute();
-                                                          $sql->bind_result($custid,$custname);
-                                                          while($sql->fetch()){
-                                                          ?>
-                                                               <option value="<?php echo $custid; ?>"><?php echo $custname; ?></option>  
-                                                          <?php
-                                                          }
-                                                          ?>
-                                                        </select>    
-                                                    </p>
-                                                    <p>
-                                                        <label for="invtype">Invoice Type:</label>
-                                                        <select name="invtype" id="invtype">
-                                                           <option value="Blank"><--Select--></option>
-                                                           <option value="Product, SIM and Service">Product, SIM and Service</option>
-                                                           <option value="SIM">SIM</option>
-                                                           <option value="Service Renew">Service Renew</option>
-                                                           
-                                                        </select>    
-                                                    </p>
-                                                    <p>
-                                                        <label for="invstatus">Invoice Status:</label>
-                                                        <select name="invstatus" id="invstatus">
-                                                           <option value="Blank"><--Select--></option>
-                                                           <option value="Waiting for SIM">Waiting for SIM</option>
-                                                           <option value="SIM Assigned">SIM Assigned</option>
-                                                           <option value="Product Assigned">Product Assigned</option>
-                                                           <option value="Service Assigned">Service Assigned</option>
+                                                           <option value="Available">Available SIM</option>
+                                                           <option value="Assigned">Assigned SIM</option>
                                                         </select>    
                                                     </p>
                                                     
